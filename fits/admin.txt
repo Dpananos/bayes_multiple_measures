@@ -1,0 +1,20 @@
+
+> admin_fit
+Inference for Stan model: single_test.
+12 chains, each with iter=2000; warmup=1000; thin=1; 
+post-warmup draws per chain=1000, total post-warmup draws=12000.
+
+             mean se_mean    sd     2.5%      25%      50%      75%    97.5% n_eff Rhat
+p            0.07    0.00  0.01     0.05     0.07     0.07     0.08     0.10  7411    1
+spec         0.94    0.00  0.00     0.93     0.94     0.94     0.94     0.95  7228    1
+sens         0.63    0.00  0.02     0.59     0.61     0.63     0.64     0.67  8015    1
+p_sample     0.10    0.00  0.00     0.09     0.10     0.10     0.11     0.11 12731    1
+yppc       432.84    0.25 27.76   380.00   413.00   433.00   451.00   488.02 12092    1
+lp__     -1395.34    0.02  1.26 -1398.61 -1395.90 -1395.01 -1394.42 -1393.91  5395    1
+
+Samples were drawn using NUTS(diag_e) at Wed Jun 17 23:17:04 2020.
+For each parameter, n_eff is a crude measure of effective sample size,
+and Rhat is the potential scale reduction factor on split chains (at 
+convergence, Rhat=1).
+
+> sink()

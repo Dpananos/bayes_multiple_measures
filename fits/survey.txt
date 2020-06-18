@@ -1,0 +1,20 @@
+
+> survey_fit
+Inference for Stan model: single_test.
+12 chains, each with iter=2000; warmup=1000; thin=1; 
+post-warmup draws per chain=1000, total post-warmup draws=12000.
+
+             mean se_mean    sd     2.5%      25%      50%      75%    97.5% n_eff Rhat
+p            0.14    0.00  0.07     0.01     0.09     0.14     0.20     0.25  4005 1.00
+spec         0.93    0.00  0.04     0.87     0.90     0.93     0.96     1.00  4111 1.00
+sens         0.55    0.00  0.02     0.51     0.54     0.55     0.57     0.59  5080 1.00
+p_sample     0.14    0.00  0.01     0.13     0.14     0.14     0.14     0.15 13192 1.00
+yppc       580.77    0.28 31.72   520.00   559.00   580.00   602.00   645.00 12748 1.00
+lp__     -1685.89    0.03  1.37 -1689.30 -1686.49 -1685.55 -1684.91 -1684.36  1931 1.01
+
+Samples were drawn using NUTS(diag_e) at Wed Jun 17 23:17:02 2020.
+For each parameter, n_eff is a crude measure of effective sample size,
+and Rhat is the potential scale reduction factor on split chains (at 
+convergence, Rhat=1).
+
+> sink()
