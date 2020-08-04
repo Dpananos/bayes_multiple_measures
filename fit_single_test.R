@@ -1,5 +1,7 @@
 library(rstan)
-
+library(tidybayes)
+library(tidyverse)
+library(posterior)
 # Survey Data
 # Positive cases, total sample, and prior parameters
 admin_dl <- list(y_sample = 432,
@@ -22,16 +24,33 @@ survey_dl <- list(y_sample = 579,
 
 
 # Compile the model
-model <- stan_model(file = 'stan/single_test.stan')
+model <- stan_model('stan/single_test.stan')
 
 # Sample the model
-survey_fit <- sampling(model, data = survey_dl, chains = 12)
+survey_fit <- sampling(model, data = survey_dl, chains=12)
 admin_fit <- sampling(model, data = admin_dl, chains = 12)
 
 sink('fits/survey.txt')
-survey_fit
+print(survey_fit, digits=3, probs = c(0.025, 0.5, 0.975))
 sink()
 
 sink('fits/admin.txt')
-admin_fit
+print(admin_fit, digits=3, probs = c(0.025, 0.5, 0.975))
 sink()
+
+admin_p = admin_fit$draws('p') %>% 
+  as_draws_df() %>% 
+  spread_draws(p) %>% 
+  mutate(model='admin')
+
+survey_p = survey_fit$draws('p') %>% 
+  as_draws_df() %>% 
+  spread_draws(p) %>% 
+  mutate(model='survey')
+
+
+bind_rows(admin_p, survey_p) %>% 
+  ggplot(aes(p, model))+
+  stat_histinterval(slab_color = "gray45", 
+                    outline_bars = TRUE,
+                    breaks = 20)

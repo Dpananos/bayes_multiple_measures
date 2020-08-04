@@ -4,6 +4,18 @@ data{
   
   real p_mu;
   real p_kappa;
+  
+  real mu_se_1;
+  real sd_se_1;
+  
+  real mu_se_2;
+  real sd_se_2;
+  
+  real mu_sp_1;
+  real sd_sp_1;
+  
+  real mu_sp_2;
+  real sd_sp_2;
 }
 parameters{
   real<lower=0, upper=1> p;
@@ -26,11 +38,11 @@ model{
   y ~ multinomial(p_sample);
   
   p ~ beta_proportion(p_mu,p_kappa);
-  se_1 ~ normal(0.692, 0.02 );
-  se_2 ~ normal(0.553, 0.07 );
+  se_1 ~ normal(mu_se_1, sd_se_1);
+  se_2 ~ normal(mu_se_2, sd_se_2);
   
-  sp_1 ~ normal(0.938, 0.005);
-  sp_2 ~ normal(0.937, 0.02);
+  sp_1 ~ normal(mu_sp_1, sd_sp_1);
+  sp_2 ~ normal(mu_sp_2, sd_sp_2);
   
 }
 generated quantities{
