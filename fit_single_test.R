@@ -2,6 +2,8 @@ library(rstan)
 library(tidybayes)
 library(tidyverse)
 library(posterior)
+
+
 # Survey Data
 # Positive cases, total sample, and prior parameters
 admin_dl <- list(y_sample = 432,
@@ -27,9 +29,12 @@ survey_dl <- list(y_sample = 579,
 model <- stan_model('stan/single_test.stan')
 
 # Sample the model
+# Because the model is compiled, we can apply it to new data as well
 survey_fit <- sampling(model, data = survey_dl, chains=12)
 admin_fit <- sampling(model, data = admin_dl, chains = 12)
 
+
+#Write the results of the fit to a little text file for easy reference
 sink('fits/survey.txt')
 print(survey_fit, digits=3, probs = c(0.025, 0.5, 0.975))
 sink()
@@ -38,13 +43,12 @@ sink('fits/admin.txt')
 print(admin_fit, digits=3, probs = c(0.025, 0.5, 0.975))
 sink()
 
-admin_p = admin_fit$draws('p') %>% 
-  as_draws_df() %>% 
+#Visualize the posterior prevalence for each.
+admin_p <- admin_fit %>% 
   spread_draws(p) %>% 
   mutate(model='admin')
 
-survey_p = survey_fit$draws('p') %>% 
-  as_draws_df() %>% 
+survey_p <- survey_fit %>% 
   spread_draws(p) %>% 
   mutate(model='survey')
 
