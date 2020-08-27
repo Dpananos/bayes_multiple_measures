@@ -6,18 +6,22 @@ library(patchwork)
 
 theme_set(theme_classic())
 
-# y<- c(PP, PN, NP, NN)
+# First indicates result on admin, second is result on survey.
+# NP <- Negative on the admin, positive on the Survey.
+
+# y<- c(PP, NP, PN, NN)
 dl <- list(y = c(164, 415, 268, 3310), 
           N = 4157,
           p_mu = 0.5, 
           p_kappa = 2,
-          mu_se_1 = 0.692,
-          sd_se_1 = 0.02,
+          mu_se_1 = 0.629,
           mu_se_2 = 0.553, 
-          sd_se_2 = 0.07,
           mu_sp_1 = 0.938,
-          sd_sp_1 = 0.005,
           mu_sp_2 = 0.937,
+          
+          sd_se_1 = 0.02,
+          sd_se_2 = 0.07,
+          sd_sp_1 = 0.005,
           sd_sp_2 = 0.02)
 
 # To be used in plotting later
@@ -38,7 +42,6 @@ print(fit, digits=3, probs = c(0.025, 0.5, 0.975))
 sink()
 
 # Make the posterior predictive check plot
-
 make_plot<-function(fit,j){
   
   plotme<-fit %>% 
@@ -48,7 +51,8 @@ make_plot<-function(fit,j){
     ggplot()+
     stat_histinterval(aes(.value),
                       outline_bars = T,
-                      slab_color = 'gray45')+
+                      slab_color = 'gray45',
+                      .width = c(0.8,0.95))+
     geom_vline(aes(xintercept = counts))+
     labs(x='', y='')+
     theme(aspect.ratio = 1,

@@ -14,27 +14,21 @@ model <- stan_model('stan/combined_tests.stan')
 make_data<-function(){
   #Draw prevalence
   p <- runif(1)
-  vec_p <- c(p, 1-p)
   
   #Draw a sensitivity and specificty from our priors.
-  sens_1 <- rnorm(1, 0.692, 0.02)
-  sens_2 <- rnorm(1, 0.553, 0.07)
+  se_1 <- rnorm(1, 0.629, 0.02)
+  se_2 <- rnorm(1, 0.553, 0.07)
   
-  spec_1 <- rnorm(1, 0.938, 0.005)
-  spec_2 <- rnorm(1, 0.937, 0.02)
+  sp_1 <- rnorm(1, 0.938, 0.005)
+  sp_2 <- rnorm(1, 0.937, 0.02)
   
   #Generate data.
-  x = c( sens_1*sens_2,
-         (1-spec_1)*(1-spec_2),
-         sens_1*(1-sens_2),
-         (1-spec_1)*spec_2, 
-         (1-sens_1)*sens_2, 
-         spec_1*(1-spec_2), 
-         (1-sens_1)*(1-sens_2), 
-         spec_1*spec_2)
+  SE1 <- c(se_1, 1-se_1,se_1, 1-se_1)
+  SE2 <- c(se_2, se_2, 1-se_2, 1-se_2)
+  SP1 <- c(1-sp_1, sp_1, 1-sp_1, sp_1)
+  SP2 <- c(1-sp_2, 1-sp_2, sp_2, sp_2)
   
-  X <- matrix(x, byrow = T, ncol = 2)
-  p_sample <- as.numeric(X%*%vec_p)
+  p_sample <- p * SE1 * SE2 + (1-p) * SP1 * SP2
   
   y <- as.numeric(rmultinom(1, size = 4157, prob = p_sample))
   

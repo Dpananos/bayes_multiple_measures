@@ -5,14 +5,14 @@ Inference for Stan model: single_test.
 post-warmup draws per chain=1000, total post-warmup draws=12000.
 
               mean se_mean     sd      2.5%       50%     97.5% n_eff  Rhat
-p            0.136   0.001  0.068     0.010     0.140     0.249  3390 1.003
-spec         0.928   0.001  0.037     0.864     0.928     0.994  3509 1.003
-sens         0.552   0.000  0.020     0.513     0.552     0.591  5010 1.002
-p_sample     0.140   0.000  0.005     0.129     0.140     0.150 13006 1.000
-yppc       580.372   0.279 31.694   520.000   580.000   644.000 12946 1.000
-lp__     -1685.894   0.026  1.329 -1689.320 -1685.542 -1684.374  2663 1.006
+p            0.136   0.001  0.068     0.010     0.140     0.250  3719 1.001
+spec         0.928   0.001  0.037     0.864     0.928     0.994  3793 1.001
+sens         0.552   0.000  0.020     0.513     0.552     0.591  4716 1.001
+p_sample     0.140   0.000  0.005     0.129     0.140     0.150 12787 1.000
+yppc       580.305   0.284 31.689   519.000   580.000   643.000 12454 1.000
+lp__     -1685.900   0.029  1.376 -1689.449 -1685.551 -1684.358  2212 1.004
 
-Samples were drawn using NUTS(diag_e) at Mon Aug 24 18:02:39 2020.
+Samples were drawn using NUTS(diag_e) at Thu Aug 27 01:15:00 2020.
 For each parameter, n_eff is a crude measure of effective sample size,
 and Rhat is the potential scale reduction factor on split chains (at 
 convergence, Rhat=1).
