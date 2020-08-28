@@ -59,12 +59,7 @@ bind_rows(admin_p, survey_p) %>%
                     breaks = 20)
 
 
-
-ps = rstan::extract(survey_fit)$p
-pa = rstan::extract(admin_fit)$p
-
-w = 1/c(var(pa), var(ps))
-y = c(mean(pa), mean(ps))
-
-sum(y*w)/sum(w)
-
+survey_fit %>% 
+  spread_draws(sens, spec,p) %>% 
+  ggplot(aes(p,spec))+
+  geom_point()

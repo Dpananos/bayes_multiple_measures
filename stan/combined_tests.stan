@@ -33,15 +33,15 @@ transformed parameters{
   // The two by two table is flattened so the cells are c(PP, NP, PN, NN).
   // Here, the first letter indicates the result of the admin test and the second the result of the survey.
   // The algebra to determine how the sensitivities and specificities are combined for the multinomial likelihood
-  // is as follows.  Using the resiult NP...
+  // is as follows.  Using the result NP as an example...
   //
   // P(NP) = P(NP|D+)P(D+) + P(NP|D-)P(D-)
   //
-  // Note that P(D+) = pi.  Assuming the test results are independent
+  // Note that P(D+) = pi is the prevalence.  Assuming the test results are independent
   //
   // = P(N|D+)P(P|D+)P(D+) + P(N|D-)P(P|D-)P(D-) = (1-se_1) x se_2 x pi + sp_1 x (1-sp_2) x (1-pi)
   //
-  // Similar computations can be performed for the remaining two cells.
+  // Similar computations can be performed for the remaining three cells.
   //
   // The code is vectorized in order to do all the computations simultanously.
   // Thus, the mulitnomial probability for the second cell is the SE1[2]*SE2[2]*pi + SP1[2]*SP2[2]*(1-pi)
@@ -71,4 +71,6 @@ generated quantities{
   // Draw from the multinomial distribution
   // 2x2 tables which are probable under the model.
   int y_ppc[4] = multinomial_rng(p_sample, N);
+  
+  real log_lik = multinomial_lpmf(y|p_sample);
 }

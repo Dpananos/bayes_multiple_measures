@@ -62,7 +62,7 @@ extract<-function(data){
   rhats<- bayesplot::rhat(fit)
   divergences<- rstan::get_divergent_iterations(fit)
   
-  r <- mean_qi(p, .width = 0.8)
+  r <- mean_qi(p, .width = c(0.8, 0.9, 0.95))
   
   r %>% 
     mutate(
@@ -83,9 +83,11 @@ read_csv('coverage/results.csv') %>%
   filter(divs<1, rhat==T) %>% 
   ggplot()+
   geom_pointrange(aes(p_true,y, ymin = ymin, ymax = ymax), color = 'gray')+
-  geom_abline()
+  geom_abline()+
+  facet_wrap(~.width)
   
 #Coverage should be approximately 0.8 since we used an 80% credible interval.
 read_csv('coverage/results.csv') %>% 
+  group_by(.width) %>% 
   mutate(contained = (p_true<ymax)&(ymin<p_true)) %>% 
   summarise(coverage = mean(contained))

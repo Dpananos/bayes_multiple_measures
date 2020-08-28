@@ -34,7 +34,7 @@ cells <- tibble(i = 1:4,
 model <- stan_model('stan/combined_tests.stan')
 
 # Fit the model
-fit <- sampling(model, data = dl, chains = 12)
+fit <- sampling(model, data = dl, chains = 12, pars = c('SE1','SE2','SP1','SP2'), include=F)
 
 # Write to a little text file for easy reference later
 sink('fits/combined.txt')
@@ -53,7 +53,7 @@ make_plot<-function(fit,j){
                       outline_bars = T,
                       slab_color = 'gray45',
                       .width = c(0.8,0.95))+
-    geom_vline(aes(xintercept = counts))+
+    geom_point(aes(x = counts, y = 0.025), color = 'black', shape=25, fill = 'red')+
     labs(x='', y='')+
     theme(aspect.ratio = 1,
           plot.margin = unit(c(1,1,1,1)*0.05, "cm"),
