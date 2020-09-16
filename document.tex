@@ -1,0 +1,79 @@
+\documentclass[10pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{graphicx}
+\usepackage{bm}
+\author{Demetri Pananos }
+\title{Bayesian Model Details}
+\begin{document}
+	\maketitle
+	
+	\noindent For a single diagnostic test, denote the sensitivity and specificity as $\delta$ and $\gamma$ accordingly. In a population where the true prevalence is $ \pi $, the estimated prevalence, $p$, obtained from the test is 
+	
+	\begin{align*}
+	p = P(T^+) &=  P(T^{+} \vert D^+)  P(D^+) +  P(T^{+} \vert D^-) \vert P(D^-)\\
+	&= \delta \pi + (1-\gamma)(1-\pi)
+	\end{align*}
+	
+	\noindent Here $T^+$ is the event that the test is positive, and $D^+$ is the event that the patient is disease positive.   When a patient is given two diagnostic tests, there are four possible outcomes:
+	\begin{enumerate}
+		\item Both tests are positive,
+		\item The first is negative, the second test is positive,
+		\item The first test is positive, the second test is negative, and
+		\item Both tests are negative
+	\end{enumerate}
+
+	\noindent The results can typically be organized into a 2x2 table
+
+\newline
+\newline
+
+	\begin{tabular}{l|l|c|c|c}
+		\multicolumn{2}{c}{}&\multicolumn{2}{c}{First Test}&\\
+		
+		\cline{3-4}
+		\multicolumn{2}{c|}{}&Positive&Negative&\multicolumn{1}{c}{}\\
+		\cline{2-4}
+		\multirow{}{}{Second Test}& Positive & $y_1$ & $y_2$ \\
+		\cline{2-4}
+		& Negative & $y_3$ & $y_4$ &\\
+		\cline{2-4}
+
+	\end{tabular} 
+\newline
+\newline
+
+	\noindent With some effort, the cell probabilities for this table can also be calculated. Let $T_{i}$ denote the outcome of the $i^{th}$ test.  Under the assumption that the results of the tests are independent, the cell probability for two positive tests is:
+	
+	\begin{align}
+	 P( T_1^+ \cap T_2^+) &= P( T_1^+ \cap T_2^+ \vert D^+)P(D^+) + P( T_1^+ \cap T_2^+\vert D-)P(D^-)  \\
+	 &= P(T_1^+\vert D^+)P(T_2^+\vert D+)P(D^+) + P(T_1^+\vert D^-)P(T_2^+\vert D^-)P(D^-) \\ 
+	 &= \delta_1 \delta_2 \pi + (1-\gamma_1)(1-\gamma_2)(1-\pi)
+	\end{align}	
+	
+	
+	\noindent Sensitivity and specificity are  probabilities.  The expression above is merely a statement that the probability both tests positive is the weighted average of the probability of positive tests, weighted by the population prevalence for disease positive and disease negative cases.  Through similar approaches, the remaining three cell probabilites (rowwise, left to right) are:
+	
+	\begin{align}
+	 P( T_1^- \cap T_2^+) &= (1-\delta_1)\delta_2\pi + \gamma_1(1-\gamma_2)(1-\pi)\\
+	  P( T_1^+ \cap T_2^-) &= \delta_1(1-\delta_2)\pi + (1-\gamma_1)\gamma_2(1-\pi)\\
+	   P( T_1^- \cap T_2^-) &= (1-\delta_1)(1-\delta_2)\pi + \gamma_1\gamma_2(1-\pi)
+	\end{align}
+	
+	\noindent With these probabilities in hand, we can describe our model's data generating process. 
+	
+	\begin{align*}
+	\delta_1 &\sim \operatorname{Trunc-Normal}(\mu_{\delta_1}, \sigma_{\delta_1}) \\
+	\delta_2 &\sim \operatorname{Trunc-Normal}(\mu_{\delta_2}, \sigma_{\delta_2}) \\\\
+	\gamma_1 &\sim \operatorname{Trunc-Normal}(\mu_{\gamma_1}, \sigma_{\gamma_1}) \\
+	\gamma_2 &\sim \operatorname{Trunc-Normal}(\mu_{\gamma_2}, \sigma_{\gamma_2}) \\\\
+	\mathbf{y}\vert \delta_1 \,, \delta_2 \,, \gamma_1 \,, \gamma_2 &\sim \operatorname{Multinomial}(\bm{\pi}; N)
+	\end{align*}
+	
+	Here, $ \operatorname{Trunc-Normal} $ is a truncated normal distribution.  We truncate our priors at 0 and 1 since the sensitivities and specificities are probabilities.  $ \mathbf{y} $ is a vector in which the elements are cell counts from the two by two table rowwise from left to right.  $ \bm{\pi} $ is a vector of the probabilities of equations (3) -- (6).
+	
+
+\end{document}

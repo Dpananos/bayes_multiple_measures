@@ -37,7 +37,7 @@ make_data<-function(){
              N = 4157,
              p_mu = 0.5, 
              p_kappa = 2,
-             mu_se_1 = 0.692,
+             mu_se_1 = 0.629,
              sd_se_1 = 0.02,
              mu_se_2 = 0.553, 
              sd_se_2 = 0.07,

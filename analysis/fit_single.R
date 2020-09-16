@@ -58,8 +58,3 @@ bind_rows(admin_p, survey_p) %>%
                     outline_bars = TRUE,
                     breaks = 20)
 
-
-survey_fit %>% 
-  spread_draws(sens, spec,p) %>% 
-  ggplot(aes(p,spec))+
-  geom_point()

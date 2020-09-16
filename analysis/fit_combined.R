@@ -139,3 +139,12 @@ hist(p$sp_2,
      cex.lab = 1.25)
 
 dev.off()
+
+
+
+fit %>% 
+  spread_draws(p, se_2, sp_2,se_1, sp_1) %>% 
+  mutate(p_survey = p*se_1 + (1-p)*(1-sp_1)) %>% 
+  ggplot(aes(p))+
+  geom_histogram()
+
